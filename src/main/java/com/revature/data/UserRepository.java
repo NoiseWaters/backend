@@ -1,5 +1,5 @@
 package com.revature.data;
 
-public class UserRepository {
+public interface UserRepository {
 
 }
