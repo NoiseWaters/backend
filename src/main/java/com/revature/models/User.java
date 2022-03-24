@@ -29,22 +29,29 @@ public class User {
 	private int id;
 	
 	@NotBlank
-	@Size(min=5)
+	@Size(min=5, max= 15, message = "Must be between 5 & 15 characters")
 	private String username;
 	
 	@NotBlank
-	@Size(min=5)
+	@Size(min=5, max = 15, message = "Must be between 5 & 15 characters")
 	private String password;
+	
+	@Email
+	private String email;
 	
 	private Map<String, Object> playlist;
 
-	public User(@NotBlank @Size(min = 5) String username, @NotBlank @Size(min = 5) String password,
-			Map<String, Object> playlist) {
+	public User(@NotBlank @Size(min = 5, max = 15, message = "Must be between 5 & 15 characters") String username,
+			@NotBlank @Size(min = 5, max = 15, message = "Must be between 5 & 15 characters") String password,
+			@Email String email, Map<String, Object> playlist) {
 		super();
 		this.username = username;
 		this.password = password;
+		this.email = email;
 		this.playlist = playlist;
 	}
+
+	
 	
 	
 	
