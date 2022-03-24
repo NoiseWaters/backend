@@ -8,7 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 // import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor
 @Entity
+@Table(name="users")
 public class User {
 	
 	@Id
@@ -25,19 +28,24 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@Size(min = 5, max = 15, message = "Must be between 5 & 15 characters")
+	@NotBlank
+	@Size(min=5)
 	private String username;
 	
-	@Size(min = 5, max = 15, message = "Must be between 5 & 15 characters")
+	@NotBlank
+	@Size(min=5)
 	private String password;
 	
-	@Email
-	private String email;
+	private Map<String, Object> playlist;
 
+	public User(@NotBlank @Size(min = 5) String username, @NotBlank @Size(min = 5) String password,
+			Map<String, Object> playlist) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.playlist = playlist;
+	}
 	
 	
-//	private Map<String, Object> songs;
-	
-//	private Map<String, Object> playlist;
 	
 }
