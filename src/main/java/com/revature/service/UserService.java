@@ -52,6 +52,16 @@ public class UserService {
 		return null;
 	}
 	
+	// REQUIRES_NEW means that whenever the program flow enters the annotated method, a new transaction will 
+	// be started regardless of any existing transaction.
+	
+//	@Transactional(propagation=Propagation.REQUIRES_NEW)
+//	public User updateUser(User u) {
+//		
+//		return userRepo.save(u); 
+//		
+//	}
+	
 	@Transactional(propagation=Propagation.REQUIRED) // default setting of transactions in Spring
 	public void remove(int id) {
 		
