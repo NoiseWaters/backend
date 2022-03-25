@@ -1,7 +1,6 @@
 package com.revature.models;
 
-import java.util.Map;
-import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
