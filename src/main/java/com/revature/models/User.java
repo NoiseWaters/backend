@@ -2,8 +2,10 @@ package com.revature.models;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -43,7 +45,7 @@ public class User {
 	@Email
 	private String email;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name="users_songs", 
 	joinColumns = @JoinColumn(name = "user_id"), 
 	inverseJoinColumns=@JoinColumn(name = "song_pk")) 

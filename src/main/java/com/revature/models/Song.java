@@ -2,8 +2,10 @@ package com.revature.models;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +28,10 @@ public class Song {
 	@Column(name="song_id")
 	private int songId;
 	
-	@ManyToMany(mappedBy="songs") // declare the owner of the relationship by mapping it to the property of the User class
+	@Column(name="song_name")
+	private String songName;
+	
+	@ManyToMany(mappedBy="songs", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST) // declare the owner of the relationship by mapping it to the property of the User class
 	private @NonNull Set<User> owners;
 
 }
