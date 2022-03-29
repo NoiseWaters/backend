@@ -8,5 +8,4 @@ import com.revature.models.Song;
 
 public interface SongRepository extends JpaRepository<Song, Integer> {
 
-	Set<Song> findByUsername(String Username);
 }
