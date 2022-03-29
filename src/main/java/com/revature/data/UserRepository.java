@@ -23,5 +23,6 @@ public interface UserRepository extends JpaRepository<User, Integer> { // JpaRes
 	@Query("FROM User WHERE email LIKE %:pattern")
 	List<User> findByEmailContains(String pattern); // johnsmi -> John Smith's User Object based on the substring passed
 												    // through ("johnsmi" returns -> johnsmith@gmail.com)
+	// boolean createUser(User u);
 	
 }
