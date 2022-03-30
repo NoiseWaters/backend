@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.data.SongRepository;
 import com.revature.data.UserRepository;
 import com.revature.models.User;
 
@@ -21,21 +22,36 @@ public class UserService {
 	@Autowired // Spring IoC container will inject the auto-generated Impl class of this interface
 	private UserRepository userRepo; // as a dependency of this Service Class
 
+	@Autowired
+	private SongRepository songRepo;
+	
 	@Autowired Optional<User> user;
 	
 	ObjectMapper mapper = new ObjectMapper();
 
 	
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
+//	@Transactional(propagation=Propagation.REQUIRES_NEW)
+//	public User add(User u) {
+//		
+//	
+//		return userRepo.save(u);
+//
+//	}
+	
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public User add(User u) {
-		
-		return userRepo.save(u);
 
+		if (u.getSongs() != null) {
+			u.getSongs().forEach(songs -> songRepo.save(songs));
+		}
+
+		return userRepo.save(u);
 	}
+
 	
 	@Transactional(propagation=Propagation.REQUIRED)
 	public void remove(int id) {
-		
+		System.out.println(id);
 		userRepo.deleteById(id);
 	}
 	

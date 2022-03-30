@@ -23,10 +23,13 @@ public class SongService {
 	@Autowired
 	private SongRepository songRepo;
 	
+	
+	
 	@Transactional(propagation=Propagation.REQUIRED) 
 	public Song saveSong(User u) {
 		
 		
+	//	u.getSongs().iterator().next().setOwners(u);
 		return songRepo.save(u.getSongs().iterator().next());
 	}
 	

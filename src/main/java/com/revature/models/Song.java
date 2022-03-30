@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -25,6 +26,7 @@ import lombok.ToString;
 @Entity 
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @EqualsAndHashCode(exclude={"owners"}) @ToString(exclude= {"owners"})
+//@JsonFormat(shape = JsonFormat.Shape.ARRAY)
 public class Song {
 	
 	@Id
