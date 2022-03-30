@@ -23,7 +23,7 @@ public class SongController {
 	@PostMapping("/add")
 	public ResponseEntity<Song> addSong(@Valid @RequestBody User u) {
 		
-		return ResponseEntity.ok(songServ.save(u));
+		return ResponseEntity.ok(songServ.saveSong(u));
 	}
 
 }

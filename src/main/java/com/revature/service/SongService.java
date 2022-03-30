@@ -24,7 +24,7 @@ public class SongService {
 	private SongRepository songRepo;
 	
 	@Transactional(propagation=Propagation.REQUIRED) 
-	public Song save(User u) {
+	public Song saveSong(User u) {
 		
 		
 		return songRepo.save(u.getSongs().iterator().next());

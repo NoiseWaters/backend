@@ -32,7 +32,7 @@ public class Song {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name="song_id")
+	@Column(name="song_id", unique=true)
 	private int songId;
 	
 	@Column(name="song_name")
@@ -45,5 +45,10 @@ public class Song {
         owners.add(user);
         user.getSongs().add(this);
     }
-	
+
+	public Song(int songId, String songName) {
+		super();
+		this.songId = songId;
+		this.songName = songName;
+	}	
 }
