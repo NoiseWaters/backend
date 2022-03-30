@@ -28,5 +28,11 @@ public class SongService {
 		
 		return songRepo.save(u.getSongs().iterator().next());
 	}
+
+	@Transactional(propagation=Propagation.REQUIRED) 
+	public Song delete(User u) {
+
+		return songRepo.delete(u.getSongs()); 
+	}
 	
 }

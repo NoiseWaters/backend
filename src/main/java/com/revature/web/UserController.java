@@ -22,6 +22,7 @@ import com.revature.service.UserService;
 
 @RestController
 @RequestMapping("/users") // all functionality is available at http://localhost:5000/api/users...
+@CrossOrigin(origins="*", allowedHeaders="*") // allows this usercontroller to be hit by other resources
 public class UserController {
 
 	@Autowired // inject the service dependency into our controller class
@@ -31,14 +32,6 @@ public class UserController {
 	public ResponseEntity<User> login(@RequestBody User user) {
 		
 		return ResponseEntity.ok(userServ.login(user));
-		
-	}
-	
-	@CrossOrigin
-	@PutMapping("/logout")
-	public ResponseEntity<User> logout(@RequestBody User user) {
-		
-		return ResponseEntity.ok(userServ.logout(user));
 		
 	}
 	
@@ -62,15 +55,7 @@ public class UserController {
 		// knows how to fix it.
 	}
 	
-	// Find a user by their id
-	@GetMapping("/{id}") // allows the client to send the request http://localhost:5000/api/users/2
-	public ResponseEntity<User> findUserById(@PathVariable("id") int id) {
-	
-		return ResponseEntity.ok(userServ.getById(id));
-	}
-	
 	// Find a user by their username
-	
 	// allows the client to send the request http://localhost:5000/api/users/johndoe
 	@GetMapping("/find/{username}") // allows the client to send the request http://localhost:5000/api/users/2
 	public ResponseEntity<Optional<User>> findUserByUsername(@PathVariable("username") String username) {
@@ -85,3 +70,17 @@ public class UserController {
 		userServ.remove(id);
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

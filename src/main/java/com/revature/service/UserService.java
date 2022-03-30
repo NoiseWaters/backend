@@ -20,14 +20,12 @@ public class UserService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired			
-	private UserRepository userRepo; 
-
+	@Autowired
+	private UserRepository userRepo;
 
 	@Transactional(readOnly = true)
 	public Set<User> findAll() {
 
-		
 		return userRepo.findAll().stream().collect(Collectors.toSet());
 	}
 
@@ -40,7 +38,7 @@ public class UserService {
 		return userRepo.save(u);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED) 
+	@Transactional(propagation = Propagation.REQUIRED)
 	public void remove(int id) {
 
 		userRepo.deleteById(id);
@@ -55,8 +53,7 @@ public class UserService {
 			return null;
 		}
 
-
-		return userRepo.findByUsername(username); 
+		return userRepo.findByUsername(username);
 	}
 
 	@Transactional(readOnly = true)
@@ -71,67 +68,25 @@ public class UserService {
 
 	}
 
-//	@Transactional(readOnly=true)
-//	public boolean createUser(User u) {
-//		
-//		if (u.getUsername() == "") {
-//			return false; 
-//		} else if (u.getPassword() == "") {
-//			return false; 
-//		}
-//		return userRepo.createUser(u);
-//		
-//	}
-
 	@Transactional(readOnly = true)
-	public User login(User login) {
-		
-		User user; 
-		System.out.println("Login Service");
-		System.out.println(login);
-		
-		if (login.getId() != 0) {
-			
-			System.out.println(login.getId());
-			user = userRepo.getById(login.getId()); 
-			
-		} else if (login.getUsername() != null) {
+	public User login(User user) {
+
+		if (user.getUsername() == null) {
+			log.warn("Username cannot be <= 0. Username passed was: {}", user.getUsername());
+
+			return null;
+
+		} else if (user.getUsername().equals(user.getUsername())) {
+
+			return userRepo.login(user);
+
 		}
-		
-		
-		return login;
-
-	}
-
-	public User logout(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepo.login(user);
 	}
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// if user exists and password matches return user
+// getbyusername
+// if username and password != null
+// send back the entire user object

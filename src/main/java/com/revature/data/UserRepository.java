@@ -17,12 +17,14 @@ public interface UserRepository extends JpaRepository<User, Integer> { // JpaRes
 	// Property Expressions ~ custom methods to find Users based on their properties
 	Optional<User> findByUsername(String username);	
 	
-	List<User> findByOrderByLastName(); // returns all the users in the DB sorted by their last name
+	// List<User> findByOrderByLastName(); // returns all the users in the DB sorted by their last name
 	
 	// custom query
 	@Query("FROM User WHERE email LIKE %:pattern")
 	List<User> findByEmailContains(String pattern); // johnsmi -> John Smith's User Object based on the substring passed
 												    // through ("johnsmi" returns -> johnsmith@gmail.com)
 	// boolean createUser(User u);
+
+	User login(User user);
 	
 }
