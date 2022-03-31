@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.data.SongRepository;
 import com.revature.data.UserRepository;
 import com.revature.exceptions.AuthenticationException;
+import com.revature.models.Song;
 import com.revature.models.User;
 
 @Service
@@ -48,45 +50,62 @@ public class UserService {
 		return userRepo.findAll().stream().collect(Collectors.toSet());
 	}
 
+	@Autowired
+	Optional<User> user;
+
+	ObjectMapper mapper = new ObjectMapper();
+
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public User deleteSong(User u) {
+		
+		u.getSongs().clear();
+		
+		return userRepo.save(u);
+
+	}
+
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public User register(User u) {
+
+		return userRepo.save(u);
+
+	}
+
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public User add(User u) {
 
 		if (u.getSongs() != null) {
-			u.getSongs().forEach(songs -> songRepo.save(songs));
-		}
+			for (Song s : u.getSongs()) {
 
+				if (songRepo.findBySongId(s.getSongId()) != null) {
+					System.out.println("hi");
+					s.setId(songRepo.findBySongId(s.getSongId()).getId());
+				}
+				songRepo.save(s);
+			}
+		}
 		return userRepo.save(u);
 	}
 
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void remove(int id) {
-
-		userRepo.deleteById(id);
-
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void remove(User u) {
+		
+		userRepo.delete(u);
 	}
 
-	@Transactional(readOnly = true)
-	public Optional<User> getByUsername(String username) {
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public Optional<User> getByUsername(User u) {
 
-		if (username == "") {
-			log.warn("Username cannot be <= 0. Id passed was: {}", username);
-			return null;
+		user = userRepo.findByUsername(u.getUsername());
+		
+		if (!user.isPresent()) {
+			System.out.println("bad");
+		} else if (user.get().getPassword().equals(u.getPassword())) {
+			return user;
 		}
-
-		return userRepo.findByUsername(username);
+		return null;
 	}
 
-	@Transactional(readOnly = true)
-	public User getById(int id) {
-
-		if (id <= 0) {
-			log.warn("Id cannot be <= 0. Id passed was: {}", id);
-			return null;
-		} else {
-			return userRepo.getById(id);
-		}
-
-	}
 
 }
 

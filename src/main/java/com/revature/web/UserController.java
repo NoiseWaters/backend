@@ -7,7 +7,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,42 +20,47 @@ import com.revature.service.UserService;
 
 @RestController
 @RequestMapping("/users") // all functionality is available at http://localhost:5000/api/users...
-@CrossOrigin(origins = "*", allowedHeaders = "*") // allows this usercontroller to be hit by other resources
 public class UserController {
 
-	@Autowired
-	private UserService userServ;
+	@Autowired // inject the service dependency into our controller class
+	private UserService userServ; 
 
-//	@PutMapping("/login")
-//	public ResponseEntity<User> login(@RequestBody User user) {
-//		
-//		return ResponseEntity.ok(userServ.login(user));
-//		
-//	}
-
-	@GetMapping
-	public ResponseEntity<Set<User>> getAll() {
-
-		return ResponseEntity.ok(userServ.findAll());
-
+	
+	@PostMapping("/register")
+	public ResponseEntity<User> register(@Valid @RequestBody User u) {
+		
+		return ResponseEntity.ok(userServ.register(u));
+		
 	}
-
-	@PostMapping("/add")
-	public ResponseEntity<User> addUser(@Valid @RequestBody User u) {
-
-		return ResponseEntity.ok(userServ.add(u));
-
+	
+	@PostMapping("/addsong")
+	public ResponseEntity<User> add(@Valid @RequestBody User u) {
+		
+		return ResponseEntity.ok(userServ.add(u));		
 	}
-
-	@GetMapping("/find/{username}")
-	public ResponseEntity<Optional<User>> findUserByUsername(@PathVariable("username") String username) {
-
-		return ResponseEntity.ok(userServ.getByUsername(username));
+	
+	@GetMapping("/find")
+	public ResponseEntity<Optional<User>> login(@RequestBody User u) {
+	
+		return ResponseEntity.ok(userServ.getByUsername(u));
 	}
-
-	@DeleteMapping("/{id}")
-	public void removeUser(@PathVariable("id") int id) {
-
-		userServ.remove(id);
+	
+	@DeleteMapping()
+	public void removeUser(@RequestBody User u) {
+		
+		userServ.remove(u);
+	}
+	
+	@DeleteMapping("/deletesong")
+	public void deleteSong(@RequestBody User u) {
+		
+		userServ.deleteSong(u);
 	}
 }
+
+
+
+
+
+
+
