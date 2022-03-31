@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.data.SongRepository;
 import com.revature.data.UserRepository;
+import com.revature.exception.AuthenticationException;
 import com.revature.models.Song;
 import com.revature.models.User;
 
@@ -31,6 +32,7 @@ public class UserService {
 	Optional<User> user;
 
 	ObjectMapper mapper = new ObjectMapper();
+	
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public User deleteSong(User u) {
@@ -84,11 +86,11 @@ public class UserService {
 		user = userRepo.findByUsername(u.getUsername());
 
 		if (!user.isPresent()) {
-			System.out.println("bad");
+			throw new AuthenticationException();
 		} else if (user.get().getPassword().equals(u.getPassword())) {
 			return user;
 		}
-		return null;
+		throw new AuthenticationException();
 	}
 
 }
