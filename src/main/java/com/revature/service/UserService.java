@@ -76,7 +76,7 @@ public class UserService {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void remove(User u) {
-
+		userRepo.save(u);
 		userRepo.delete(u);
 	}
 
