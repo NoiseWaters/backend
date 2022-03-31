@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.revature.exceptions.AuthenticationException;
 import com.revature.data.UserRepository;
 import com.revature.models.User;
 
@@ -22,6 +23,21 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepo;
+	
+	// calls on the DB (by way of the User Repository) to check the credentials of the user that's logging in
+		public User authenticate(User user) {
+			
+			// asks the question: are you who you say you are and do you exist in the DB?
+			User userInDb = userRepo.findByUsername(user.getUsername())
+					.orElseThrow(AuthenticationException::new); // instantiate a new Authentication excpetion IF the username doesn't exists
+			
+			// test the password
+			if (user.getPassword().equals(userInDb.getPassword())) {
+				return userInDb;
+			}
+			
+			throw new AuthenticationException();
+		}
 
 	@Transactional(readOnly = true)
 	public Set<User> findAll() {
@@ -68,25 +84,6 @@ public class UserService {
 
 	}
 
-	@Transactional(readOnly = true)
-	public User login(User user) {
-
-		if (user.getUsername() == null) {
-			log.warn("Username cannot be <= 0. Username passed was: {}", user.getUsername());
-
-			return null;
-
-		} else if (user.getUsername().equals(user.getUsername())) {
-
-			return userRepo.login(user);
-
-		}
-		return userRepo.login(user);
-	}
-
 }
 
-// if user exists and password matches return user
-// getbyusername
-// if username and password != null
-// send back the entire user object
+

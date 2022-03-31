@@ -32,9 +32,9 @@ public class SongController {
 	}
 	
 	@DeleteMapping("/delete")
-	public ResponseEntity<Song> deleteSong(@PathVariable User u) {
-		
-		return ResponseEntity.ok(songServ.delete(u)); 	
+	public void deleteSong(@PathVariable User u) {
+		 
+		songServ.delete(u); 
 	}
 
 }

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.revature.models.User;
 
-@Repository // Sterotype Annotation! Repository, Controller, RestController, Service
+@Repository // Stereotype Annotation! Repository, Controller, RestController, Service
 public interface UserRepository extends JpaRepository<User, Integer> { // JpaRespoitory extends Paging&SortingRepository  extends CrudReposiotry
 
 	// spring automatically creates .save(), update(), delete, findAll(), findById()....
@@ -25,6 +25,5 @@ public interface UserRepository extends JpaRepository<User, Integer> { // JpaRes
 												    // through ("johnsmi" returns -> johnsmith@gmail.com)
 	// boolean createUser(User u);
 
-	User login(User user);
 	
 }

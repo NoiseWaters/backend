@@ -28,12 +28,12 @@ public class UserController {
 	@Autowired // inject the service dependency into our controller class
 	private UserService userServ; 
 	
-	@PutMapping("/login")
-	public ResponseEntity<User> login(@RequestBody User user) {
-		
-		return ResponseEntity.ok(userServ.login(user));
-		
-	}
+//	@PutMapping("/login")
+//	public ResponseEntity<User> login(@RequestBody User user) {
+//		
+//		return ResponseEntity.ok(userServ.login(user));
+//		
+//	}
 	
 	// when a client sends a GET request to http://localhost:5000/api/users, they retrieve all users
 	@GetMapping

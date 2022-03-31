@@ -7,6 +7,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,9 +31,9 @@ public class SongService {
 	}
 
 	@Transactional(propagation=Propagation.REQUIRED) 
-	public Song delete(User u) {
+	public void delete(User u) {
 
-		return songRepo.delete(u.getSongs()); 
+		songRepo.delete(u.getSongs().iterator().next());
 	}
 	
 }
