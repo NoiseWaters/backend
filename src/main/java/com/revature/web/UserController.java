@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,65 +21,42 @@ import com.revature.service.UserService;
 
 @RestController
 @RequestMapping("/users") // all functionality is available at http://localhost:5000/api/users...
-@CrossOrigin(origins="*", allowedHeaders="*") // allows this usercontroller to be hit by other resources
+@CrossOrigin(origins = "*", allowedHeaders = "*") // allows this usercontroller to be hit by other resources
 public class UserController {
 
-	@Autowired // inject the service dependency into our controller class
-	private UserService userServ; 
-	
+	@Autowired
+	private UserService userServ;
+
 //	@PutMapping("/login")
 //	public ResponseEntity<User> login(@RequestBody User user) {
 //		
 //		return ResponseEntity.ok(userServ.login(user));
 //		
 //	}
-	
-	// when a client sends a GET request to http://localhost:5000/api/users, they retrieve all users
+
 	@GetMapping
 	public ResponseEntity<Set<User>> getAll() {
-		
-		// Returning a ResponseEntity object allows you to edit parts of the HTTP response like the status
+
 		return ResponseEntity.ok(userServ.findAll());
-		
+
 	}
-	
-	// to add a User, accept a POST request, and return the added User object
+
 	@PostMapping("/add")
-	public ResponseEntity<User> addUser(@Valid @RequestBody User u) { // @Valid ensures that the user object accepted
-																	  // abides by the Validations we set up on its properties
-		
+	public ResponseEntity<User> addUser(@Valid @RequestBody User u) {
+
 		return ResponseEntity.ok(userServ.add(u));
-		// what happens if a user tries to add a malformed JSON object????
-		// we will use power of AOP to intercept the response that's sent back so the user/client
-		// knows how to fix it.
+
 	}
-	
-	// Find a user by their username
-	// allows the client to send the request http://localhost:5000/api/users/johndoe
-	@GetMapping("/find/{username}") // allows the client to send the request http://localhost:5000/api/users/2
+
+	@GetMapping("/find/{username}")
 	public ResponseEntity<Optional<User>> findUserByUsername(@PathVariable("username") String username) {
-	
+
 		return ResponseEntity.ok(userServ.getByUsername(username));
 	}
-	
-	// Delete a user when they delete request to the url/id
+
 	@DeleteMapping("/{id}")
 	public void removeUser(@PathVariable("id") int id) {
-		
+
 		userServ.remove(id);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

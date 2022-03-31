@@ -1,6 +1,5 @@
 package com.revature.service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -12,8 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.revature.exceptions.AuthenticationException;
+import com.revature.data.SongRepository;
 import com.revature.data.UserRepository;
+import com.revature.exceptions.AuthenticationException;
 import com.revature.models.User;
 
 @Service
@@ -24,15 +24,18 @@ public class UserService {
 	@Autowired
 	private UserRepository userRepo;
 	
+	@Autowired
+	private SongRepository songRepo; 
+	
 	// calls on the DB (by way of the User Repository) to check the credentials of the user that's logging in
-		public User authenticate(User user) {
+	public User authenticate(User user) {
 			
-			// asks the question: are you who you say you are and do you exist in the DB?
-			User userInDb = userRepo.findByUsername(user.getUsername())
+		// asks the question: are you who you say you are and do you exist in the DB?
+		User userInDb = userRepo.findByUsername(user.getUsername())
 					.orElseThrow(AuthenticationException::new); // instantiate a new Authentication excpetion IF the username doesn't exists
 			
-			// test the password
-			if (user.getPassword().equals(userInDb.getPassword())) {
+		// test the password
+		if (user.getPassword().equals(userInDb.getPassword())) {
 				return userInDb;
 			}
 			
@@ -48,7 +51,8 @@ public class UserService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public User add(User u) {
 
-		if (u.getUsername() != null) {
+		if (u.getSongs() != null) {
+			u.getSongs().forEach(songs -> songRepo.save(songs));
 		}
 
 		return userRepo.save(u);
