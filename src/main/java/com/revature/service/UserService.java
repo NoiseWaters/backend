@@ -32,13 +32,14 @@ public class UserService {
 
 	ObjectMapper mapper = new ObjectMapper();
 
-//	@Transactional(propagation=Propagation.REQUIRES_NEW)
-//	public User add(User u) {
-//		
-//	
-//		return userRepo.save(u);
-//
-//	}
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public User deleteSong(User u) {
+		
+		u.getSongs().clear();
+		
+		return userRepo.save(u);
+
+	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public User register(User u) {
@@ -65,7 +66,7 @@ public class UserService {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void remove(User u) {
-
+		
 		userRepo.delete(u);
 	}
 

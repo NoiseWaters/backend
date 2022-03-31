@@ -57,6 +57,11 @@ public class User {
 	inverseJoinColumns=@JoinColumn(name = "song_pk"))
 //	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 	private Set<Song> songs;
+	
+	public void removeClassB(Song b) {
+        songs.remove(b);
+        b.getOwners().remove(this);
+    }  
 
 	public User(
 			@NotBlank @Size(min = 5, max = 15, message = "Must be between 5 & 15 characters") @Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*") String username,

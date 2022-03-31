@@ -50,4 +50,10 @@ public class UserController {
 		
 		userServ.remove(u);
 	}
+	
+	@DeleteMapping("/deletesong")
+	public void deleteSong(@RequestBody User u) {
+		
+		userServ.deleteSong(u);
+	}
 }
