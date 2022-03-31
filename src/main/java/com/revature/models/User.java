@@ -18,7 +18,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -50,7 +49,7 @@ public class User {
 	@Email
 	private String email;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.PERSIST)
 	@JoinTable(name="users_songs", 
 	joinColumns = @JoinColumn(name = "user_id"), 
 	inverseJoinColumns=@JoinColumn(name = "song_pk"))

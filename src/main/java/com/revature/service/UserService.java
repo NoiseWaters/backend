@@ -12,24 +12,26 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.data.SongRepository;
 import com.revature.data.UserRepository;
+import com.revature.models.Song;
 import com.revature.models.User;
 
 @Service
 public class UserService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
-	
-	@Autowired // Spring IoC container will inject the auto-generated Impl class of this interface
+
+	@Autowired // Spring IoC container will inject the auto-generated Impl class of this
+				// interface
 	private UserRepository userRepo; // as a dependency of this Service Class
 
 	@Autowired
 	private SongRepository songRepo;
-	
-	@Autowired Optional<User> user;
-	
+
+	@Autowired
+	Optional<User> user;
+
 	ObjectMapper mapper = new ObjectMapper();
 
-	
 //	@Transactional(propagation=Propagation.REQUIRES_NEW)
 //	public User add(User u) {
 //		
@@ -37,27 +39,39 @@ public class UserService {
 //		return userRepo.save(u);
 //
 //	}
-	
+
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public User register(User u) {
+
+		return userRepo.save(u);
+
+	}
+
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public User add(User u) {
 
 		if (u.getSongs() != null) {
-			u.getSongs().forEach(songs -> songRepo.save(songs));
-		}
+			for (Song s : u.getSongs()) {
 
+				if (songRepo.findBysongId(s.getSongId()) != null) {
+					System.out.println("hi");
+					s.setId(songRepo.findBysongId(s.getSongId()).getId());
+				}
+				songRepo.save(s);
+			}
+		}
 		return userRepo.save(u);
 	}
 
-	
-	@Transactional(propagation=Propagation.REQUIRED)
-	public void remove(int id) {
-		System.out.println(id);
-		userRepo.deleteById(id);
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void remove(User u) {
+
+		userRepo.delete(u);
 	}
-	
-	@Transactional(readOnly=true)
+
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Optional<User> getByUsername(User u) {
-		
+
 		user = userRepo.findByUsername(u.getUsername());
 		if (user.isEmpty()) {
 			System.out.println("bad");
@@ -66,5 +80,5 @@ public class UserService {
 		}
 		return null;
 	}
-	
+
 }

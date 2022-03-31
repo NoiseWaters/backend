@@ -29,8 +29,14 @@ public class UserController {
 	@PostMapping("/register")
 	public ResponseEntity<User> register(@Valid @RequestBody User u) {
 		
-		return ResponseEntity.ok(userServ.add(u));
+		return ResponseEntity.ok(userServ.register(u));
 		
+	}
+	
+	@PostMapping("/addsong")
+	public ResponseEntity<User> add(@Valid @RequestBody User u) {
+		
+		return ResponseEntity.ok(userServ.add(u));		
 	}
 	
 	@GetMapping("/find")
@@ -39,9 +45,9 @@ public class UserController {
 		return ResponseEntity.ok(userServ.getByUsername(u));
 	}
 	
-	@DeleteMapping("/{id}")
-	public void removeUser(@PathVariable("id") int id) {
+	@DeleteMapping()
+	public void removeUser(@RequestBody User u) {
 		
-		userServ.remove(id);
+		userServ.remove(u);
 	}
 }

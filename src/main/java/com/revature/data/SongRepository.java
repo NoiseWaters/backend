@@ -6,4 +6,5 @@ import com.revature.models.Song;
 
 public interface SongRepository extends JpaRepository<Song, Integer> {
 
+	Song findBysongId(int id);
 }
