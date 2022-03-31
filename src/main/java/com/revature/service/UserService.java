@@ -32,13 +32,21 @@ public class UserService {
 
 	ObjectMapper mapper = new ObjectMapper();
 
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public User deleteSong(User u) {
-		
-		u.getSongs().clear();
-		
+//		userRepo.save(u);
+//		//user = userRepo.findByUsername(u.getUsername());
+//
+//		if (u.getSongs() != null) {
+//			for (Song s : u.getSongs()) {
+//				if (songRepo.findBysongId(s.getSongId()) != null) {
+//					s.setId(songRepo.findBysongId(s.getSongId()).getId());
+//					
+//					
+//				}
+//			}
+//		}
 		return userRepo.save(u);
-
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -66,7 +74,7 @@ public class UserService {
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void remove(User u) {
-		
+
 		userRepo.delete(u);
 	}
 
@@ -74,8 +82,8 @@ public class UserService {
 	public Optional<User> getByUsername(User u) {
 
 		user = userRepo.findByUsername(u.getUsername());
-		
-		if (user.isEmpty()) {
+
+		if (!user.isPresent()) {
 			System.out.println("bad");
 		} else if (user.get().getPassword().equals(u.getPassword())) {
 			return user;

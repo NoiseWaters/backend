@@ -13,6 +13,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
 	Optional<User> findByUsername(String username); 
 	
-//	@Query("INSERT INTO user_songs (user_pk, song_pk) VALUES (, ?)")
-//	void addToPlaylist(int userId, int songId);
+	
 }

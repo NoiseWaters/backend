@@ -1,16 +1,14 @@
 package com.revature.web;
 
-import javax.validation.Valid;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.models.Song;
-import com.revature.models.User;
 import com.revature.service.SongService;
 
 @RestController
@@ -22,10 +20,10 @@ public class SongController {
 	
 	
 	
-	@PostMapping("/add")
-	public ResponseEntity<Song> addSong(@Valid @RequestBody User u) {
+	@GetMapping
+	public ResponseEntity<List<Song>> addSong() {
 		
-		return ResponseEntity.ok(songServ.saveSong(u));
+		return ResponseEntity.ok(songServ.saveSong());
 	}
 
 }

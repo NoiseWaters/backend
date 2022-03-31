@@ -51,7 +51,7 @@ public class UserController {
 		userServ.remove(u);
 	}
 	
-	@DeleteMapping("/deletesong")
+	@PostMapping("/deletesong")
 	public void deleteSong(@RequestBody User u) {
 		
 		userServ.deleteSong(u);

@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "songs"})
+
 @Entity
 @Table(name="users")
 public class User {
@@ -51,7 +51,7 @@ public class User {
 	@Email
 	private String email;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade= CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.LAZY, cascade= CascadeType.PERSIST)
 	@JoinTable(name="users_songs", 
 	joinColumns = @JoinColumn(name = "user_id"), 
 	inverseJoinColumns=@JoinColumn(name = "song_pk"))

@@ -2,6 +2,7 @@ package com.revature.service;
 
 
 
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -26,11 +27,11 @@ public class SongService {
 	
 	
 	@Transactional(propagation=Propagation.REQUIRED) 
-	public Song saveSong(User u) {
+	public List<Song> saveSong() {
 		
 		
 	//	u.getSongs().iterator().next().setOwners(u);
-		return songRepo.save(u.getSongs().iterator().next());
+		return songRepo.findAll();
 	}
 	
 }
