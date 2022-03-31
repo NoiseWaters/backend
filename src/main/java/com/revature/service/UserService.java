@@ -73,6 +73,7 @@ public class UserService {
 	public Optional<User> getByUsername(User u) {
 
 		user = userRepo.findByUsername(u.getUsername());
+		
 		if (user.isEmpty()) {
 			System.out.println("bad");
 		} else if (user.get().getPassword().equals(u.getPassword())) {
