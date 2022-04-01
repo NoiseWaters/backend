@@ -28,7 +28,6 @@ import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-
 @Entity
 @Table(name="users")
 public class User {
@@ -38,17 +37,11 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@NotBlank
-	@Size(min=5, max= 15, message = "Must be between 5 & 15 characters")
-	@Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*")
 	@Column(unique=true)
 	private String username;
 	
-	@NotBlank
-	@Size(min=5, max = 15, message = "Must be between 5 & 15 characters")
 	private String password;
 	
-	@Email
 	private String email;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade= CascadeType.PERSIST)
