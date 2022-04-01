@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.revature.service.UserService;
 
 @RestController
 @RequestMapping("/users") // all functionality is available at http://localhost:5000/api/users...
+@CrossOrigin(origins="*", allowedHeaders="*")
 public class UserController {
 
 	@Autowired // inject the service dependency into our controller class
@@ -39,8 +41,8 @@ public class UserController {
 		return ResponseEntity.ok(userServ.add(u));		
 	}
 	
-	@GetMapping("/find")
-	public ResponseEntity<Optional<User>> login(@RequestBody User u) {
+	@PostMapping("/find")
+	public ResponseEntity<Optional<User>> login(@Valid @RequestBody User u) {
 	
 		return ResponseEntity.ok(userServ.getByUsername(u));
 	}

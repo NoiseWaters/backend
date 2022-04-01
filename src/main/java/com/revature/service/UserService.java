@@ -86,6 +86,7 @@ public class UserService {
 		user = userRepo.findByUsername(u.getUsername());
 
 		if (!user.isPresent()) {
+			System.out.println("cannot find");
 			throw new AuthenticationException();
 		} else if (user.get().getPassword().equals(u.getPassword())) {
 			return user;
