@@ -33,24 +33,6 @@ public class UserService {
 
 	ObjectMapper mapper = new ObjectMapper();
 	
-
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public User deleteSong(User u) {
-//		userRepo.save(u);
-//		//user = userRepo.findByUsername(u.getUsername());
-//
-//		if (u.getSongs() != null) {
-//			for (Song s : u.getSongs()) {
-//				if (songRepo.findBysongId(s.getSongId()) != null) {
-//					s.setId(songRepo.findBysongId(s.getSongId()).getId());
-//					
-//					
-//				}
-//			}
-//		}
-		return userRepo.save(u);
-	}
-
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public User register(User u) {
 
@@ -65,7 +47,7 @@ public class UserService {
 			for (Song s : u.getSongs()) {
 
 				if (songRepo.findBysongId(s.getSongId()) != null) {
-					System.out.println("hi");
+					
 					s.setId(songRepo.findBysongId(s.getSongId()).getId());
 				}
 				songRepo.save(s);

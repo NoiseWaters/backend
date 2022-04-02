@@ -49,10 +49,4 @@ public class UserController {
 		
 		userServ.remove(u);
 	}
-	
-	@PostMapping("/deletesong")
-	public void deleteSong(@RequestBody User u) {
-		
-		userServ.deleteSong(u);
-	}
 }

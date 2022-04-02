@@ -13,5 +13,4 @@ public class RevaProject2Application {
 		SpringApplication.run(RevaProject2Application.class, args);
 	
 	}
-
 }
