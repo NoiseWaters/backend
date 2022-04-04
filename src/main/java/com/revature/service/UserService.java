@@ -18,11 +18,22 @@ import com.revature.models.User;
 
 @Service
 public class UserService {
+	
+/*
+ * 	@Service
 
+	public class UserService {
+		@Autowired
+		private UsersDao cdao;
+		// @Autowired //Possibly needed, possibly breaking
+		public UserService(UsersDao mockDao) {
+			cdao = mockDao;
+		}
+ */
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired // Spring IoC container will inject the auto-generated Impl class of this
-				// interface
+	// Spring IoC container will inject the auto-generated Impl class of this interface
+	@Autowired				
 	private UserRepository userRepo; // as a dependency of this Service Class
 
 	@Autowired
