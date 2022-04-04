@@ -41,7 +41,7 @@ public class Song {
 	private String songName;
 	
 	@ManyToMany(mappedBy="songs", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // declare the owner of the relationship by mapping it to the property of the User class
-	private @NonNull Set<User> owners;
+	private Set<User> owners;
 
 	public void addUser(User user) {
         owners.add(user);
