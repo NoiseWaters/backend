@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.models.Song;
 import com.revature.models.User;
 import com.revature.service.UserService;
 
@@ -32,30 +33,36 @@ public class UserController {
 	public ResponseEntity<User> register(@Valid @RequestBody User u) {
 		
 		return ResponseEntity.ok(userServ.register(u));
-		
 	}
 	
 	@PostMapping("/addsong")
 	public ResponseEntity<User> add(@Valid @RequestBody User u) {
-		
+		//System.out.println(u);
 		return ResponseEntity.ok(userServ.add(u));		
 	}
 	
 	@PostMapping("/find")
 	public ResponseEntity<Optional<User>> login(@Valid @RequestBody User u) {
-	
+		
 		return ResponseEntity.ok(userServ.getByUsername(u));
 	}
 	
-	@DeleteMapping()
-	public void removeUser(@RequestBody User u) {
+	
+	@PostMapping("/findNoPwd")
+	public ResponseEntity<Optional<User>> find(@Valid @RequestBody User u) {
 		
-		userServ.remove(u);
+		return ResponseEntity.ok(userServ.getByUsernameNoPwdCheck(u));
+	}
+	
+	@PostMapping("/removeuser")
+	public ResponseEntity<Optional<User>> removeUser(@Valid @RequestBody User u) {
+		return ResponseEntity.ok(userServ.remove(u));
 	}
 	
 	@PostMapping("/deletesong")
-	public void deleteSong(@RequestBody User u) {
+	public ResponseEntity<User> deleteSong(@Valid @RequestBody Song s) {
 		
-		userServ.deleteSong(u);
+		//System.out.println(u);
+		return ResponseEntity.ok(userServ.removeSong(s));
 	}
 }

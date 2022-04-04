@@ -3,6 +3,7 @@ package com.revature.service;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -32,6 +33,14 @@ public class SongService {
 		
 	//	u.getSongs().iterator().next().setOwners(u);
 		return songRepo.findAll();
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRED) 
+	public Optional<Long> removeSong(int id) {
+		
+		
+	//	u.getSongs().iterator().next().setOwners(u);
+		return songRepo.deleteById(id);
 	}
 	
 }

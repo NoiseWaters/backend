@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -39,13 +40,13 @@ public class User {
 	private int id;
 	
 	@NotBlank
-	@Size(min=5, max= 15, message = "Must be between 5 & 15 characters")
+	@Size(min=3, max= 15, message = "Must be between 3 & 15 characters")
 	@Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*")
 	@Column(unique=true)
 	private String username;
 	
 	@NotBlank
-	@Size(min=5, max = 15, message = "Must be between 5 & 15 characters")
+	@Size(min=3, max = 15, message = "Must be between 3 & 15 characters")
 	private String password;
 	
 	@Email
@@ -56,7 +57,7 @@ public class User {
 	joinColumns = @JoinColumn(name = "user_id"), 
 	inverseJoinColumns=@JoinColumn(name = "song_pk"))
 //	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-	private Set<Song> songs;
+	private List<Song> songs;
 	
 	public void removeClassB(Song b) {
         songs.remove(b);
@@ -84,7 +85,7 @@ public class User {
 	public User(
 			@NotBlank @Size(min = 5, max = 15, message = "Must be between 5 & 15 characters") @Pattern(regexp = "[a-zA-Z][a-zA-Z0-9]*") String username,
 			@NotBlank @Size(min = 5, max = 15, message = "Must be between 5 & 15 characters") String password,
-			@Email String email, Set<Song> songs) {
+			@Email String email, List<Song> songs) {
 		super();
 		this.username = username;
 		this.password = password;
