@@ -33,6 +33,7 @@ public class UserController {
 	public ResponseEntity<User> register(@Valid @RequestBody User u) {
 		
 		return ResponseEntity.ok(userServ.register(u));
+		
 	}
 	
 	@PostMapping("/addsong")
