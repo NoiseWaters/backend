@@ -1,5 +1,6 @@
 package com.revature.models;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -10,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -34,17 +36,21 @@ public class Song {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name="song_id", unique=true)
+	@Column(name="song_id")
 	private int songId;
 	
 	@Column(name="song_name")
 	private String songName;
 	
+	@Column(name="artist_name")
+	private String artistName;
+	
+	
 	@ManyToMany(mappedBy="songs", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST) // declare the owner of the relationship by mapping it to the property of the User class
-	private @NonNull Set<User> owners;
+	private @NonNull List<User> owners;
 
 	public void addUser(User user) {
-        owners.add(user);
+		owners.add(user);
         user.getSongs().add(this);
     }
 
@@ -54,6 +60,3 @@ public class Song {
 		this.songName = songName;
 	}	
 }
-
-
-

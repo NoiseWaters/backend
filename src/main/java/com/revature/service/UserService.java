@@ -1,8 +1,6 @@
 package com.revature.service;
 
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.data.SongRepository;
 import com.revature.data.UserRepository;
-import com.revature.exceptions.AuthenticationException;
+import com.revature.exception.AuthenticationException;
 import com.revature.models.Song;
 import com.revature.models.User;
 
@@ -23,45 +21,34 @@ public class UserService {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	private UserRepository userRepo;
-	
-	@Autowired
-	private SongRepository songRepo; 
-	
-	// calls on the DB (by way of the User Repository) to check the credentials of the user that's logging in
-	public User authenticate(User user) {
-			
-		// asks the question: are you who you say you are and do you exist in the DB?
-		User userInDb = userRepo.findByUsername(user.getUsername())
-					.orElseThrow(AuthenticationException::new); // instantiate a new Authentication excpetion IF the username doesn't exists
-			
-		// test the password
-		if (user.getPassword().equals(userInDb.getPassword())) {
-				return userInDb;
-			}
-			
-			throw new AuthenticationException();
-		}
+	@Autowired // Spring IoC container will inject the auto-generated Impl class of this
+				// interface
+	private UserRepository userRepo; // as a dependency of this Service Class
 
-	@Transactional(readOnly = true)
-	public Set<User> findAll() {
-
-		return userRepo.findAll().stream().collect(Collectors.toSet());
-	}
+	@Autowired
+	private SongRepository songRepo;
 
 	@Autowired
 	Optional<User> user;
 
 	ObjectMapper mapper = new ObjectMapper();
+	
 
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public User deleteSong(User u) {
-		
-		u.getSongs().clear();
-		
+//		userRepo.save(u);
+//		//user = userRepo.findByUsername(u.getUsername());
+//
+//		if (u.getSongs() != null) {
+//			for (Song s : u.getSongs()) {
+//				if (songRepo.findBysongId(s.getSongId()) != null) {
+//					s.setId(songRepo.findBysongId(s.getSongId()).getId());
+//					
+//					
+//				}
+//			}
+//		}
 		return userRepo.save(u);
-
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -70,43 +57,79 @@ public class UserService {
 		return userRepo.save(u);
 
 	}
+	
+	@Transactional(propagation=Propagation.REQUIRED) 
+	public User removeSong(Song song) {
+		
+		Optional<User> u1 = userRepo.findByUsername(song.getArtistName());
+		
+		Song s1 = new Song();
+		for(Song s : u1.get().getSongs()) {
+			if((song.getId()) == (s.getId())) {
+				System.out.println("I FOUND THE ONE ===============================");
+				System.out.println(song);
+				System.out.println(s);
+				s1 = s;
+				song.setArtistName(s.getArtistName());
+				break;
+			}
+		}
+		u1.get().getSongs().remove(song);
+		return userRepo.save(u1.get());
+	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public User add(User u) {
-
+		
+//		System.out.println("\n\n\n\n\n THIS RAN ");
+		Optional<User> u1 = userRepo.findByUsername(u.getUsername());
+		//System.out.println(u1.get().getSongs().add);
+		
+		//u1.get().setSongs(u1.get().getSongs().add(u.getSongs()));
 		if (u.getSongs() != null) {
 			for (Song s : u.getSongs()) {
-
-				if (songRepo.findBySongId(s.getSongId()) != null) {
-					System.out.println("hi");
-					s.setId(songRepo.findBySongId(s.getSongId()).getId());
-				}
+				
+				u1.get().getSongs().add(s);
+				u1.get().setSongs(u1.get().getSongs());
+				
+				
 				songRepo.save(s);
+				
+//				if (songRepo.findBysongId(s.getSongId()) != null) {
+//					//s.setId(songRepo.findBysongId(s.getSongId()).getId());
+//				}else{
+//					songRepo.save(s);
+//				}
 			}
 		}
-		return userRepo.save(u);
+		return userRepo.save(u1.get());
 	}
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void remove(User u) {
+	public Optional<User> remove(User u) {
+
+		return userRepo.deleteByUsername(u.getUsername());
 		
-		userRepo.delete(u);
 	}
 
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public Optional<User> getByUsernameNoPwdCheck(User u) {
+
+		return userRepo.findByUsername(u.getUsername());
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public Optional<User> getByUsername(User u) {
 
 		user = userRepo.findByUsername(u.getUsername());
-		
+
 		if (!user.isPresent()) {
-			System.out.println("bad");
+			System.out.println("cannot find");
+			throw new AuthenticationException();
 		} else if (user.get().getPassword().equals(u.getPassword())) {
 			return user;
 		}
-		return null;
+		throw new AuthenticationException();
 	}
 
-
 }
-
-
