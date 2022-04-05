@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.revature.data.SongRepository;
 import com.revature.data.UserRepository;
 import com.revature.models.Song;
+import com.revature.models.User;
 import com.revature.service.SongService;
 import com.revature.service.UserService;
 
@@ -38,6 +39,7 @@ public class SongServiceTest {
 
 	@Test
 	public void saveSongSuccess() {
+		
 		Song song = new Song();
 		song.setId(1);
 		song.setSongName("Hells Bells");
@@ -49,17 +51,17 @@ public class SongServiceTest {
 		assertThat(savedSong.getId()).isNotNull();
 	}
 
-//	@Test
-//	public void removeSongSuccess() {
-//		Song song = new Song();
-//		song.setId(1);
-//		song.setSongName("Hells Bells");
-//		song.setArtistName("ACDC");
-//
-//		when(songRepo.save(song)).thenReturn(song);
-//
-//		Optional<Long> savedSong = songRepo.deleteById(1);
-//		assertEquals(savedSong.get(), 0);
-//	}
+	@Test
+	public void removeSongSuccess() {
+		
+		Song song = new Song();
+		song.setId(1);
+		song.setSongName("Hells Bells");
+		song.setArtistName("ACDC");
+		songRepo.save(song);
+		songRepo.deleteById(song.getId());
+		Optional<Song> optional = songRepo.findById(song.getId());
+		assertEquals(Optional.empty(), optional);
+	}
 
 }
